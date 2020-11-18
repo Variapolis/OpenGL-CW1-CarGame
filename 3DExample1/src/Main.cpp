@@ -44,7 +44,7 @@ void reshape(int w, int h)
 //the callback for the timer tick
 void TimerFunction(int value)
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	//glClear(GL_COLOR_BUFFER_BIT);
 	// Timer code goes here
 	timer += 1.0;
 	if (timer > 200) { timer = 0; }
@@ -55,8 +55,7 @@ void TimerFunction(int value)
 /* graphics initialisation */ 
 void init(void)
 {
-   /*glClearColor (0.0, 0.0, 0.0, 0.0);   /* window will be cleared to black */
-    glClearColor (0.0, 0.0, 0.0, 0.0);     /* window will be cleared to red */
+    glClearColor (0.0, 0.0, 0.0, 0.0);     /* window will be cleared to black */
 	rectangles.push_back(new rectangle(1, 1, 2, 2));
 }
 
@@ -73,8 +72,8 @@ void display()
 	// display code goes here (Making shapes etc)
 	glPushMatrix();
 	
-	if (timer < 100) { rectangles[0]->Move(-0.1, 0); }
-	else{rectangles[0]->Move(0.1, 0);}
+	if (timer < 100) { rectangles[0]->Move(-0.1, 0.0); }
+	else{rectangles[0]->Move(0.1, 0.0);}
 	rectangles[0]->Draw();
 	glPopMatrix();
 	glutSwapBuffers();

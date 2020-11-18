@@ -11,6 +11,9 @@ public:
 	int getPosX(); 	int getPosY();	int getWidth();	int getHeight();
 	void Draw();
 	void Move(GLfloat x, GLfloat y);
+	void MoveTo(GLfloat x, GLfloat y);
 	void Resize(GLfloat width, GLfloat height);
+	void ResizeWidth(GLfloat width);
+	void ResizeHeight(GLfloat height);
 };
 

@@ -26,14 +26,18 @@ void rectangle::Draw() // Draw function inside the rectangle class creates a tri
 }
 
 int rectangle::getPosX(){	return _posX;}
-int rectangle:: getPosY() { return _posY; }
+int rectangle::getPosY() { return _posY; }
 int rectangle::getWidth() { return _width; }
 int rectangle::getHeight() { return _height; }
 
 
 void rectangle::Move(GLfloat x, GLfloat y) { _posX += x; _posY += y; }
 
+void rectangle::MoveTo(GLfloat x, GLfloat y){ _posX = x; _posY = y; }
+
 void rectangle::Resize(GLfloat width, GLfloat height) { _width = width; _height = height; }
+void rectangle::ResizeWidth(GLfloat width) { _width = width; }
+void rectangle::ResizeHeight(GLfloat height) {_height = height; }
 
 
 
