@@ -1,10 +1,10 @@
 #pragma once
-#include "GameObject.h"
-class Obstacle :  public GameObject
+#include "Rect.h"
+class Obstacle :  public Rect
 {
 public:
 	Obstacle(GLfloat x, GLfloat y, GLfloat width, GLfloat height);
-	void Draw();
-	void SetColor();
+	Obstacle();
+	
 };
 

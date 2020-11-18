@@ -13,19 +13,34 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Base classes">
+      <UniqueIdentifier>{7bb335b0-aa93-4414-aadb-56dbddedd8f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{3806de2e-3c11-4199-ae7a-35c5aa7536f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logic classes">
+      <UniqueIdentifier>{d05a50de-186c-4c45-bf66-81afd338e0cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Obstacle.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayerCar.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rect.cpp">
+      <Filter>Source Files\Base classes</Filter>
     </ClCompile>
     <ClCompile Include="src\GameObject.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Base classes</Filter>
     </ClCompile>
     <ClCompile Include="src\Spawner.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Logic classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -36,6 +51,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Spawner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlayerCar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

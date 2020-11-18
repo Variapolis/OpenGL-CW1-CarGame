@@ -10,7 +10,7 @@ GameObject::GameObject(GLfloat x, GLfloat y): _posX(x), _posY(y), _width(1), _he
 	
 }
 
-GameObject::GameObject(): _posX(0), _posY(0), _width(0),_height(0) // default constructor
+GameObject::GameObject(): _posX(0), _posY(0), _width(1),_height(1) // default constructor
 {
 }
 

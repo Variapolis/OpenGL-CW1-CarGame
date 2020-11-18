@@ -1,6 +1,10 @@
 #pragma once
-class Spawner
+#include "GameObject.h"
+class Spawner : public GameObject
 {
-	Spawner(){}
+	
+public:
+	Spawner(GLfloat x, GLfloat y, GLfloat width, GLfloat height);
+	Spawner();
 };
 

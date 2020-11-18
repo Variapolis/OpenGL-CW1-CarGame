@@ -19,12 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\PlayerCar.cpp" />
+    <ClCompile Include="src\Rect.cpp" />
     <ClCompile Include="src\Spawner.cpp" />
     <ClCompile Include="src\Obstacle.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\PlayerCar.h" />
+    <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\Spawner.h" />
     <ClInclude Include="src\Obstacle.h" />
     <ClInclude Include="src\GameObject.h" />
