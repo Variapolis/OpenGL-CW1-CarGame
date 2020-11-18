@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 #include "freeglut.h"	// OpenGL toolkit - in the local shared folder
-#include "Rectangle.h"
+#include "Obstacle.h"
 
 
 //set up some constants
@@ -18,7 +18,7 @@
 
 //use to set/track star coordinate for moving/translated star
 // Globals for star and helix
-std::vector<rectangle*> rectangles;
+std::vector<Obstacle*> rectangles;
 GLfloat timer;
 
 /* reshape callback function
@@ -44,7 +44,7 @@ void reshape(int w, int h)
 //the callback for the timer tick
 void TimerFunction(int value)
 {
-	//glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
 	// Timer code goes here
 	timer += 1.0;
 	if (timer > 200) { timer = 0; }
@@ -56,7 +56,7 @@ void TimerFunction(int value)
 void init(void)
 {
     glClearColor (0.0, 0.0, 0.0, 0.0);     /* window will be cleared to black */
-	rectangles.push_back(new rectangle(1, 1, 2, 2));
+	rectangles.push_back(new Obstacle(1, 1, 2, 2));
 }
 
 
@@ -101,6 +101,7 @@ void keyboard(unsigned char key, int x, int y)
 		break;
 	}
 }
+
 //rename this to main(...) and change example 2 to run this main function
 int main(int argc, char** argv)
 {
