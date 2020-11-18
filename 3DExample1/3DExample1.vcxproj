@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Obstacle.cpp" />
     <ClCompile Include="src\Rectangle.cpp" />
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Obstacle.h" />
     <ClInclude Include="src\Rectangle.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

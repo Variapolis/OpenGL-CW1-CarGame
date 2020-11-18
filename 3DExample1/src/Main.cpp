@@ -13,11 +13,12 @@
 #define X_CENTRE 0.0      /* centre point of square */
 #define Y_CENTRE 0.0
 #define LENGTH   1.0      /* lengths of sides of square */
+#define SPEED 1
 #define PI 3.14159265
 
 //use to set/track star coordinate for moving/translated star
 // Globals for star and helix
-rectangle* rectangle1;
+std::vector<rectangle*> rectangles;
 GLfloat timer;
 
 /* reshape callback function
@@ -46,8 +47,7 @@ void TimerFunction(int value)
 	glClear(GL_COLOR_BUFFER_BIT);
 	// Timer code goes here
 	timer += 1.0;
-	if (timer > 100) { timer = 0; }
-
+	if (timer > 200) { timer = 0; }
 	glutPostRedisplay();
 	glutTimerFunc(5, TimerFunction, 0);//calls TimerFunction on tick - callback
 }
@@ -57,8 +57,9 @@ void init(void)
 {
    /*glClearColor (0.0, 0.0, 0.0, 0.0);   /* window will be cleared to black */
     glClearColor (0.0, 0.0, 0.0, 0.0);     /* window will be cleared to red */
-	rectangle1 = new rectangle(1, 1, 2, 2);
+	rectangles.push_back(new rectangle(1, 1, 2, 2));
 }
+
 
 /* display callback function
    called whenever contents of window need to be re-displayed */
@@ -71,13 +72,36 @@ void display()
 
 	// display code goes here (Making shapes etc)
 	glPushMatrix();
-	if (timer < 50) { glTranslatef(-1.0, 1.0, 0.0); }
-	else {glTranslatef(-5.0, -10.0, 0.0); }
-	rectangle1->Draw();
+	
+	if (timer < 100) { rectangles[0]->Move(-0.1, 0); }
+	else{rectangles[0]->Move(0.1, 0);}
+	rectangles[0]->Draw();
 	glPopMatrix();
 	glutSwapBuffers();
 }
 
+void keyboard(unsigned char key, int x, int y)
+{
+	switch (key)
+	{
+	case 'w':
+		rectangles[0]->Move(0, SPEED);
+		glutPostRedisplay();
+		break;
+	case 's':
+		rectangles[0]->Move(0, -SPEED);
+		glutPostRedisplay();
+		break;
+	case 'd':
+		rectangles[0]->Move(SPEED, 0);
+		glutPostRedisplay();
+		break;
+	case 'a':
+		rectangles[0]->Move(-SPEED, 0);
+		glutPostRedisplay();
+		break;
+	}
+}
 //rename this to main(...) and change example 2 to run this main function
 int main(int argc, char** argv)
 {
@@ -89,7 +113,7 @@ int main(int argc, char** argv)
    /* window width = 400 pixels, height = 400 pixels */
    /* window width = 640 pixels, height = 480 pixels for a 4:3 ascpect ratio */
    /* window width = 1024 pixels, height = 576 pixels for a 16:9 ascpect ratio */
-   glutInitWindowSize (500, 500);
+   glutInitWindowSize (1024, 720);
    /* window upper left corner at (100, 100) */
    glutInitWindowPosition (100, 100);
    /* creates an OpenGL window with command argument in its title bar */
@@ -99,7 +123,7 @@ int main(int argc, char** argv)
    
    glutDisplayFunc(display);
    glutReshapeFunc(reshape);
-   
+   glutKeyboardFunc(keyboard);
    //needed for animation
    glutTimerFunc(5, TimerFunction, 0);
    glutMainLoop();
