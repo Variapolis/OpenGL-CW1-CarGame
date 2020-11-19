@@ -57,7 +57,7 @@ void init(void)
 {
     glClearColor (0.0, 0.0, 0.0, 0.0);     /* window will be cleared to black */
 	srand(time(NULL));
-    spawner->Spawn();
+    spawner->Spawn(250,1,1);
 }
 
 
