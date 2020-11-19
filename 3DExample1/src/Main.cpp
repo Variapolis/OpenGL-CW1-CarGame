@@ -5,21 +5,21 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
+#include <time.h>
+#include <stdlib.h>
 #include "freeglut.h"	// OpenGL toolkit - in the local shared folder
-#include "Obstacle.h"
+#include "Spawner.h"
 
 
 //set up some constants
 #define X_CENTRE 0.0      /* centre point of square */
 #define Y_CENTRE 0.0
-#define LENGTH   1.0      /* lengths of sides of square */
-#define SPEED 1
-#define PI 3.14159265
 
 //use to set/track star coordinate for moving/translated star
 // Globals for star and helix
-std::vector<Obstacle*> rectangles;
 GLfloat timer;
+Spawner* spawner = new Spawner(X_CENTRE, Y_CENTRE, 70, 40);
+
 
 /* reshape callback function
    executed when window is moved or resized. */
@@ -56,7 +56,8 @@ void TimerFunction(int value)
 void init(void)
 {
     glClearColor (0.0, 0.0, 0.0, 0.0);     /* window will be cleared to black */
-	rectangles.push_back(new Obstacle(1, 1, 2, 2));
+	srand(time(NULL));
+    spawner->Spawn();
 }
 
 
@@ -71,11 +72,9 @@ void display()
 
 	// display code goes here (Making shapes etc)
 	glPushMatrix();
-	
-	if (timer < 100) { rectangles[0]->Move(-0.1, 0.0); }
-	else{rectangles[0]->Move(0.1, 0.0);}
-	rectangles[0]->Draw();
+	spawner->DebugDraw(0.0,1.0,0.0,0.5);
 	glPopMatrix();
+	spawner->Draw();
 	glutSwapBuffers();
 }
 
@@ -84,19 +83,19 @@ void keyboard(unsigned char key, int x, int y)
 	switch (key)
 	{
 	case 'w':
-		rectangles[0]->Move(0, SPEED);
+		//rectangles[0]->Move(0, SPEED);
 		glutPostRedisplay();
 		break;
 	case 's':
-		rectangles[0]->Move(0, -SPEED);
+		//rectangles[0]->Move(0, -SPEED);
 		glutPostRedisplay();
 		break;
 	case 'd':
-		rectangles[0]->Move(SPEED, 0);
+		//rectangles[0]->Move(SPEED, 0);
 		glutPostRedisplay();
 		break;
 	case 'a':
-		rectangles[0]->Move(-SPEED, 0);
+		//rectangles[0]->Move(-SPEED, 0);
 		glutPostRedisplay();
 		break;
 	}

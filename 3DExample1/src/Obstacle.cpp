@@ -4,6 +4,10 @@ Obstacle::Obstacle(GLfloat x, GLfloat y, GLfloat width, GLfloat height):Rect(x,y
 {
 }
 
+Obstacle::Obstacle(GLfloat x, GLfloat y) : Rect(x, y)
+{
+}
+
 Obstacle::Obstacle():Rect()
 {
 }

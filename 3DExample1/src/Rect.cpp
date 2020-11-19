@@ -4,6 +4,10 @@ Rect::Rect(GLfloat x, GLfloat y, GLfloat width, GLfloat height) :GameObject(x, y
 {
 }
 
+Rect::Rect(GLfloat x, GLfloat y) : GameObject(x, y)
+{
+}
+
 Rect::Rect():GameObject()
 {
 }
