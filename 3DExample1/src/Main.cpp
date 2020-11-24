@@ -22,6 +22,8 @@ GLfloat timer = 0, timer2 = 0.2, timer3 = 0;
 Spawner* spawner = new Spawner(X_CENTRE, Y_CENTRE, 50, 20);
 PlayerCar* player = new PlayerCar(2, 0, 0, 4, 2);
 bool rainbow = false, grid = false;
+bool timerUp1 = false;
+bool timerUp2 = false;
 
 /* reshape callback function
    executed when window is moved or resized. */
@@ -48,16 +50,18 @@ void TimerFunction(int value)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	// Timer code goes here
-	bool timerUp1 = true;
-	bool timerUp2 = true;
-	if (timer > 100) { timerUp1 = false; }
-	else if (timer < 0) { timerUp1 = true; }
-	if (timer2 > 100) { timerUp1 = false; }
-	else if (timer2 < 0) { timerUp1 = true; }
-	
-	timer += 0.22*(!timerUp1*-1);
-	timer2 += 0.22 * (!timerUp2 * -1);
-	std::cout << timer<< " " << timer2<< " " << timer3 << std::endl;
+	GLfloat rate = 1;
+	if (timer > 100) { timerUp1 = true; }
+	if (timer < 0) { timerUp1 = false; }
+	//std::cout << timerUp1 << std::endl;
+	timer += rate + (timerUp1 * (-rate * 2));
+	/*std::cout << timer<< std::endl;*/
+	GLfloat rate2 = 1.2;
+	if (timer2 > 100) { timerUp2 = true; }
+	if (timer2 < 0) { timerUp2 = false; }
+	//std::cout << timerUp2 << std::endl;
+	timer2 += rate2 + (timerUp2 * (-rate2 * 2));
+	/*std::cout << timer<<" timer 2 " << timer2<< std::endl;*/
 	
 	glutPostRedisplay();
 	glutTimerFunc(5, TimerFunction, 0);//calls TimerFunction on tick - callback
