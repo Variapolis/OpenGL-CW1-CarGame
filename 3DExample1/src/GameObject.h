@@ -9,7 +9,7 @@ public:
 	GameObject(GLfloat x, GLfloat y, GLfloat width, GLfloat height);
 	GameObject(GLfloat x, GLfloat y);
 	GameObject();
-	int getPosX(); 	int getPosY();	int getWidth();	int getHeight();
+	GLfloat getPosX(); 	GLfloat getPosY();	GLfloat getWidth();	GLfloat getHeight();
 	void Move(GLfloat x, GLfloat y);
 	void MoveTo(GLfloat x, GLfloat y);
 	void Resize(GLfloat width, GLfloat height);

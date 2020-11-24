@@ -6,8 +6,8 @@
 
 class Spawner : public GameObject
 {
-	std::vector<Obstacle*> obstacles;
 public:
+	std::vector<Obstacle*> obstacles;
 	Spawner(GLfloat x, GLfloat y, GLfloat width, GLfloat height);
 	Spawner();
 	void DebugDraw(GLfloat r, GLfloat g, GLfloat b, GLfloat a);

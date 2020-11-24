@@ -3,9 +3,10 @@
 class PlayerCar :
     public Rect
 {
-
 public:
-	PlayerCar(GLfloat x, GLfloat y, GLfloat width, GLfloat height);
-	PlayerCar();
+	GLfloat _speed;
+	PlayerCar(GLfloat speed, GLfloat x, GLfloat y, GLfloat width, GLfloat height);
+	PlayerCar(GLfloat speed);
+	void CheckCollision(GameObject* obstacle);
 };
 

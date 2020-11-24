@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include "freeglut.h"	// OpenGL toolkit - in the local shared folder
 #include "Spawner.h"
-
+#include "PlayerCar.h"
 
 //set up some constants
 #define X_CENTRE 0.0      /* centre point of square */
@@ -19,7 +19,8 @@
 // Globals for star and helix
 GLfloat timer;
 Spawner* spawner = new Spawner(X_CENTRE, Y_CENTRE, 70, 40);
-
+PlayerCar* player = new PlayerCar(2, 0, 0, 4, 2);
+bool rainbow = false, grid = false;
 
 /* reshape callback function
    executed when window is moved or resized. */
@@ -51,13 +52,62 @@ void TimerFunction(int value)
 	glutPostRedisplay();
 	glutTimerFunc(5, TimerFunction, 0);//calls TimerFunction on tick - callback
 }
+void rightMenu(GLint id)
+{
+	switch(id)
+	{
+	case 1:
+		rainbow = true;
+		break;
+	case 2:
+		rainbow = false;
+		break;
+	case 3:
+		if (grid) { grid = false; }
+		else { grid = true; }
+		break;
+	default: 
+		break;
+	}
+	glutPostRedisplay();
+}
+
+void keyboard(unsigned char key, int x, int y)
+{
+	switch (key)
+	{
+	case 'w':
+		player->Move(0, player->_speed);
+		break;
+	case 's':
+		player->Move(0, -player->_speed);
+		break;
+	case 'd':
+		player->Move(player->_speed, 0);
+		break;
+	case 'a':
+		player->Move(-player->_speed, 0);
+		break;
+	}
+	glutPostRedisplay();
+	for(Obstacle* i : spawner->obstacles)
+	{
+		player->CheckCollision(i);
+	}
+}
 
 /* graphics initialisation */ 
 void init(void)
 {
     glClearColor (0.0, 0.0, 0.0, 0.0);     /* window will be cleared to black */
 	srand(time(NULL));
-    spawner->Spawn(250,1,1);
+    spawner->Spawn(25,3,3);
+	glutCreateMenu(rightMenu);
+	glutAddMenuEntry("Gamer Mode on", 1);
+	glutAddMenuEntry("Gamer Mode off", 2);
+	glutAddMenuEntry("Grid toggle", 3);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	
 }
 
 
@@ -75,31 +125,10 @@ void display()
 	spawner->DebugDraw(0.0,1.0,0.0,0.5);
 	glPopMatrix();
 	spawner->Draw();
+	player->Draw();
 	glutSwapBuffers();
 }
 
-void keyboard(unsigned char key, int x, int y)
-{
-	switch (key)
-	{
-	case 'w':
-		//rectangles[0]->Move(0, SPEED);
-		glutPostRedisplay();
-		break;
-	case 's':
-		//rectangles[0]->Move(0, -SPEED);
-		glutPostRedisplay();
-		break;
-	case 'd':
-		//rectangles[0]->Move(SPEED, 0);
-		glutPostRedisplay();
-		break;
-	case 'a':
-		//rectangles[0]->Move(-SPEED, 0);
-		glutPostRedisplay();
-		break;
-	}
-}
 
 //rename this to main(...) and change example 2 to run this main function
 int main(int argc, char** argv)

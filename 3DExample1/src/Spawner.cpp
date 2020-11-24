@@ -22,7 +22,7 @@ void Spawner::DebugDraw(GLfloat r, GLfloat g, GLfloat b, GLfloat a) // Draw func
 	glFlush();
 }
 
-void Spawner::Draw()
+void Spawner::Draw() // Draws all of the spawned obstacles.
 {
 	for(int i = 0; i < obstacles.size(); i++)
 	{

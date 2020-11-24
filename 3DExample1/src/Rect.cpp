@@ -14,11 +14,11 @@ Rect::Rect():GameObject()
 
 void Rect::Draw() // Draw function inside the rectangle class creates a triangle strip with 4 vertices based on the position and size variables.
 {
-	glBegin(GL_TRIANGLE_STRIP);
+	glBegin(GL_POLYGON);
 	glVertex2f((_posX - _width), (_posY - _height));
 	glVertex2f((_posX + _width), (_posY - _height));
-	glVertex2f((_posX - _width), (_posY + _height));
 	glVertex2f((_posX + _width), (_posY + _height));
+	glVertex2f((_posX - _width), (_posY + _height));
 	glEnd();
 	glFlush();
 }
