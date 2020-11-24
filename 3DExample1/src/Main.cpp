@@ -12,69 +12,59 @@
 #include "PlayerCar.h"
 #include "ConsoleDebug.h"
 
-//set up some constants
-#define X_CENTRE 0.0      /* centre point of square */
+//Constants
+#define X_CENTRE 0.0      // Centre
 #define Y_CENTRE 0.0
 
-//use to set/track star coordinate for moving/translated star
-// Globals for star and helix
-GLfloat timer = 0, timer2 = 0.2, timer3 = 0;
+//Globals
+GLfloat rainbowRed = 0, rainbowGreen = 0.2, rainbowBlue = 0;
 Spawner* spawner = new Spawner(X_CENTRE, Y_CENTRE, 50, 20);
 PlayerCar* player = new PlayerCar(2, 0, 0, 4, 2);
-bool rainbow = false, grid = false;
-bool timerUp1 = false;
-bool timerUp2 = false;
+bool rainbowMode = false, grid = false;
+bool redCountUp = false;
+bool greenCountUp = false;
 
-/* reshape callback function
-   executed when window is moved or resized. */
+// Callback function when the window size is changed.
 void reshape(int w, int h)
 {
 	GLfloat aspect = (GLfloat)w / (GLfloat)h;
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	if (w <= h) /* aspect <= 1 */
+	if (w <= h) // aspect <= 1
 		glOrtho(-50.0, 50.0, -50.0 / aspect, 50.0 / aspect, -50.0, 50.0);
-	else /* aspect > 1 */
+	else // aspect > 1
 		glOrtho(-50.0*aspect, 50.0*aspect, -50.0, 50.0, -50.0, 50.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
 
+void RateChange(bool &isUp, GLfloat &number, GLfloat rate) //Simple function to make changing the 
+{
+	if (number > 100) { isUp = true; }
+	if (number < 0) { isUp = false; }
+	number += rate + (isUp * (-rate * 2));
+}
 
 
-
-//The timer function
-//the callback for the timer tick
+//Timer callback function
 void TimerFunction(int value)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	// Timer code goes here
-	GLfloat rate = 1;
-	if (timer > 100) { timerUp1 = true; }
-	if (timer < 0) { timerUp1 = false; }
-	//std::cout << timerUp1 << std::endl;
-	timer += rate + (timerUp1 * (-rate * 2));
-	/*std::cout << timer<< std::endl;*/
-	GLfloat rate2 = 1.2;
-	if (timer2 > 100) { timerUp2 = true; }
-	if (timer2 < 0) { timerUp2 = false; }
-	//std::cout << timerUp2 << std::endl;
-	timer2 += rate2 + (timerUp2 * (-rate2 * 2));
-	/*std::cout << timer<<" timer 2 " << timer2<< std::endl;*/
-	
+	RateChange(redCountUp, rainbowRed, 0.2); // Rate change for rainbow "GAMER MODE" colours.
+	RateChange(greenCountUp, rainbowGreen, 0.3);
 	glutPostRedisplay();
-	glutTimerFunc(5, TimerFunction, 0);//calls TimerFunction on tick - callback
+	glutTimerFunc(5, TimerFunction, 0); //calls TimerFunction on tick - callback
 }
 void rightMenu(GLint id)
 {
 	switch(id)
 	{
 	case 1:
-		rainbow = true;
+		rainbowMode = true;
 		break;
 	case 2:
-		rainbow = false;
+		rainbowMode = false;
 		break;
 	case 3:
 		if (grid) { grid = false; }
@@ -113,10 +103,10 @@ void keyboard(unsigned char key, int x, int y)
 	}
 }
 
-/* graphics initialisation */ 
+// Graphics initialization function
 void init(void)
 {
-    glClearColor (0.0, 0.0, 0.0, 0.0);     /* window will be cleared to black */
+    glClearColor (0.0, 0.0, 0.0, 0.0);     // window will be cleared to black
 	srand(time(NULL));
     spawner->Spawn(3,3,3);
 	player->SetColor(1, 1, 1);
@@ -129,8 +119,7 @@ void init(void)
 }
 
 
-/* display callback function
-   called whenever contents of window need to be re-displayed */
+// display callback function called whenever contents of window need to be re-displayed
    //this is the all important drawing method - all drawing code goes in here
 void display()
 {
@@ -143,9 +132,9 @@ void display()
 	spawner->DebugDraw(0.0,1.0,0.0,0.5);
 	glPopMatrix();
 	spawner->Draw();
-	if (rainbow)
+	if (rainbowMode)
 	{
-		player->SetColor(timer/100, timer2/100, 0.5);
+		player->SetColor(rainbowRed/100, rainbowGreen/100, 0.5);
 	}
 	else
 	{
@@ -160,21 +149,13 @@ void display()
 int main(int argc, char** argv)
 {
 	       /* window management code ... */
-   /* initialises GLUT and processes any command line arguments */  
-   glutInit(&argc, argv);
-   /* use single-buffered window and RGBA colour model */
-   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
-   /* window width = 400 pixels, height = 400 pixels */
-   /* window width = 640 pixels, height = 480 pixels for a 4:3 ascpect ratio */
-   /* window width = 1024 pixels, height = 576 pixels for a 16:9 ascpect ratio */
-   glutInitWindowSize (1024, 720);
-   /* window upper left corner at (100, 100) */
-   glutInitWindowPosition (100, 100);
-   /* creates an OpenGL window with command argument in its title bar */
-   glutCreateWindow ("Car Game");
    
+   glutInit(&argc, argv); // initialises GLUT and processes any command line arguments   
+   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);	// Double Buffered, RGB colour-space  
+   glutInitWindowSize (1024, 720);	// window width = 1024 pixels, height = 576 pixels for a 16:9 ascpect ratio    
+   glutInitWindowPosition (600, 100);	// Window upper left corner at (100, 100) in Windows space.
+   glutCreateWindow ("Car Game");	// creates an OpenGL window with command argument in its title bar 
    init();
-   
    glutDisplayFunc(display);
    glutReshapeFunc(reshape);
    glutKeyboardFunc(keyboard);
