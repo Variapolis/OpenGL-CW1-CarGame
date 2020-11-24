@@ -15,7 +15,6 @@ public:
 	int GetRandBounds(int upper);
 	void Spawn(int amount, GLfloat width, GLfloat height);
 	void Spawn(GLfloat width, GLfloat height);
-	void Spawn();
-	
+	bool CheckSpawn(GameObject* obstacle, GLfloat posX, GLfloat posY, GLfloat width, GLfloat height);
 };
 

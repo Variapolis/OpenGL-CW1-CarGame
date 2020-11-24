@@ -10,6 +10,7 @@
 #include "freeglut.h"	// OpenGL toolkit - in the local shared folder
 #include "Spawner.h"
 #include "PlayerCar.h"
+#include "ConsoleDebug.h"
 
 //set up some constants
 #define X_CENTRE 0.0      /* centre point of square */
@@ -17,8 +18,8 @@
 
 //use to set/track star coordinate for moving/translated star
 // Globals for star and helix
-GLfloat timer;
-Spawner* spawner = new Spawner(X_CENTRE, Y_CENTRE, 70, 40);
+GLfloat timer = 0, timer2 = 0.2, timer3 = 0;
+Spawner* spawner = new Spawner(X_CENTRE, Y_CENTRE, 50, 20);
 PlayerCar* player = new PlayerCar(2, 0, 0, 4, 2);
 bool rainbow = false, grid = false;
 
@@ -47,8 +48,17 @@ void TimerFunction(int value)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	// Timer code goes here
-	timer += 1.0;
-	if (timer > 200) { timer = 0; }
+	bool timerUp1 = true;
+	bool timerUp2 = true;
+	if (timer > 100) { timerUp1 = false; }
+	else if (timer < 0) { timerUp1 = true; }
+	if (timer2 > 100) { timerUp1 = false; }
+	else if (timer2 < 0) { timerUp1 = true; }
+	
+	timer += 0.22*(!timerUp1*-1);
+	timer2 += 0.22 * (!timerUp2 * -1);
+	std::cout << timer<< " " << timer2<< " " << timer3 << std::endl;
+	
 	glutPostRedisplay();
 	glutTimerFunc(5, TimerFunction, 0);//calls TimerFunction on tick - callback
 }
@@ -104,7 +114,8 @@ void init(void)
 {
     glClearColor (0.0, 0.0, 0.0, 0.0);     /* window will be cleared to black */
 	srand(time(NULL));
-    spawner->Spawn(25,3,3);
+    spawner->Spawn(3,3,3);
+	player->SetColor(1, 1, 1);
 	glutCreateMenu(rightMenu);
 	glutAddMenuEntry("Gamer Mode on", 1);
 	glutAddMenuEntry("Gamer Mode off", 2);
@@ -128,6 +139,14 @@ void display()
 	spawner->DebugDraw(0.0,1.0,0.0,0.5);
 	glPopMatrix();
 	spawner->Draw();
+	if (rainbow)
+	{
+		player->SetColor(timer/100, timer2/100, 0.5);
+	}
+	else
+	{
+		player->SetColor(1, 1, 1);
+	}
 	player->Draw();
 	glutSwapBuffers();
 }

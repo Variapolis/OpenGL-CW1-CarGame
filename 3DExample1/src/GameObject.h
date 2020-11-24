@@ -1,6 +1,6 @@
 #pragma once
 #include "freeglut.h"
-
+#include "ConsoleDebug.h"
 class GameObject
 {
 protected:

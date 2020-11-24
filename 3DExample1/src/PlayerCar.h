@@ -8,6 +8,7 @@ public:
 	PlayerCar(GLfloat speed, GLfloat x, GLfloat y, GLfloat width, GLfloat height);
 	PlayerCar(GLfloat speed);
 	void CheckCollision(GameObject* obstacle);
+	void HandleCollision(GameObject* obstacle);
 	void Rotate();
 };
 

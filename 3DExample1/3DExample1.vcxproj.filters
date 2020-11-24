@@ -42,6 +42,9 @@
     <ClCompile Include="src\Spawner.cpp">
       <Filter>Source Files\Logic classes</Filter>
     </ClCompile>
+    <ClCompile Include="src\ConsoleDebug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Obstacle.h">
@@ -57,6 +60,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\PlayerCar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ConsoleDebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ConsoleDebug.cpp" />
     <ClCompile Include="src\PlayerCar.cpp" />
     <ClCompile Include="src\Rect.cpp" />
     <ClCompile Include="src\Spawner.cpp" />
@@ -27,6 +28,7 @@
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ConsoleDebug.h" />
     <ClInclude Include="src\PlayerCar.h" />
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\Spawner.h" />
