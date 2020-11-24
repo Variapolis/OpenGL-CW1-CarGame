@@ -16,11 +16,18 @@ void PlayerCar::CheckCollision(GameObject* obstacle)
 {
 	bool isColliding = false;
 	
-	if((_posX + _width)>=(obstacle->getPosX()) && (obstacle->getPosX() + obstacle->getWidth()) >= _posX)
+	if((_posX + _width)> obstacle->getPosX() - obstacle->getWidth() && _posX - _width < obstacle->getPosX() + obstacle->getWidth())
 	{
-		if((_posY + _height) >= (obstacle->getPosY()) && (obstacle->getPosY() + obstacle->getHeight()) >= _posY)
+		if(_posY + _height > obstacle->getPosY() - obstacle->getHeight() && _posY - _height < obstacle->getPosY() + obstacle->getHeight())
 		{
 			std::cout << "collide" << std::endl;
 		}
 	}
+}
+
+void PlayerCar::Rotate()
+{
+	GLfloat temp = _width;
+	_width = _height;
+	_height = temp;
 }

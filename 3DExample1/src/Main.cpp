@@ -88,6 +88,9 @@ void keyboard(unsigned char key, int x, int y)
 	case 'a':
 		player->Move(-player->_speed, 0);
 		break;
+	case 'r':
+		player->Rotate();
+		break;		
 	}
 	glutPostRedisplay();
 	for(Obstacle* i : spawner->obstacles)
