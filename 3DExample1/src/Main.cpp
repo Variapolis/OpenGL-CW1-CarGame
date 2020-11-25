@@ -45,7 +45,7 @@ Boundary* border = new Boundary(X_CENTRE, Y_CENTRE, BOUNDARY_WIDTH, BOUNDARY_HEI
 bool rainbowMode = false, grid = false;
 bool redCountUp = false;
 bool greenCountUp = false;
-std::string s = "Respect mah authoritah!";
+std::string scoreStr = "Score: ";
 void* font = GLUT_BITMAP_9_BY_15;
 
 // Callback function when the window size is changed.
@@ -63,12 +63,23 @@ void reshape(int w, int h)
 	glLoadIdentity();
 }
 
-void DisplayScore()
+void DrawGrid()
 {
+	
+}
+
+void DisplayScore(GLfloat x, GLfloat y)
+{
+	std::string scr = std::to_string(player->GetScore()); // Score converted to string
 	glPushMatrix();
 	glColor3f(0.0, 1.0, 0.0); // Green
-	glRasterPos2i(10, 10);
-	for (std::string::iterator i = s.begin(); i != s.end(); ++i)
+	glRasterPos2i(x, y);
+	for (std::string::iterator i = scoreStr.begin(); i != scoreStr.end(); ++i) // Iterator for the string.
+	{
+		char c = *i;
+		glutBitmapCharacter(font, c);
+	}
+	for(std::string::iterator i = scr.begin(); i != scr.end(); ++i) // Iterator for score.
 	{
 		char c = *i;
 		glutBitmapCharacter(font, c);
@@ -172,7 +183,7 @@ void display()
 	border->Draw(1, 1, 1, 1);
 	player->CheckBoundsCollision(border, START_X, START_Y);
 	glPopMatrix();
-	DisplayScore();
+	DisplayScore(START_X, END_Y);
 	spawner->Draw();
 	if (rainbowMode)
 	{
