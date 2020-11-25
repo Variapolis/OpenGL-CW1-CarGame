@@ -14,9 +14,9 @@ GameObject::GameObject(): _posX(0), _posY(0), _width(1),_height(1) // default co
 {
 }
 
-GLfloat GameObject::getPosX(){	return _posX;}
-GLfloat GameObject::getPosY() { return _posY; }
-GLfloat GameObject::getWidth() { return _width; }
+GLfloat GameObject::getPosX()	{ return _posX; }
+GLfloat GameObject::getPosY()	{ return _posY; }
+GLfloat GameObject::getWidth()	{ return _width; }
 GLfloat GameObject::getHeight() { return _height; }
 
 

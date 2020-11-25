@@ -2,7 +2,6 @@
 #include "GameObject.h"
 #include "Obstacle.h"
 #include <vector>
-#include <iostream>
 
 class Spawner : public GameObject
 {

@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Boundary.cpp" />
+    <ClCompile Include="src\EndGate.cpp" />
     <ClCompile Include="src\ConsoleDebug.cpp" />
     <ClCompile Include="src\PlayerCar.cpp" />
     <ClCompile Include="src\Rect.cpp" />
@@ -28,6 +30,8 @@
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Boundary.h" />
+    <ClInclude Include="src\EndGate.h" />
     <ClInclude Include="src\ConsoleDebug.h" />
     <ClInclude Include="src\PlayerCar.h" />
     <ClInclude Include="src\Rect.h" />
