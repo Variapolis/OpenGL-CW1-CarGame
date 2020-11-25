@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 #include <time.h>
-#include <stdlib.h>
 #include "freeglut.h"	// OpenGL toolkit - in the local shared folder
 #include "Spawner.h"
 #include "PlayerCar.h"
@@ -17,33 +16,37 @@
 //Constants
 #define X_CENTRE 0.0      // Centre
 #define Y_CENTRE 0.0
-#define START_X -30.0	// Spawn
-#define START_Y -30.0
+#define START_X -50.0	// Spawn
+#define START_Y -36.0
 #define END_X 50.0	// EndGate
 #define END_Y 38.0
 
-#define PLAYER_WIDTH 4.0 // Player Size
+#define PLAYER_WIDTH 4.0 // Player
 #define PLAYER_HEIGHT 2.0
+#define PLAYER_SPEED 2
 
-#define DEFAULT_SIZE 4.0 // Obstacle Size
+#define DEFAULT_SIZE 4.0 // Obstacle
 #define DEFAULT_AMOUNT 6
 
-#define BOUNDARY_WIDTH 54 //Bounds Size
+#define BOUNDARY_WIDTH 54 //Bounds
 #define BOUNDARY_HEIGHT 40
 
-#define START_SCORE 50 // Score constants
+#define START_SCORE 50 // Scores
 #define WIN_SCORE 30
 #define LOSE_SCORE 10
 
 //Globals
 GLfloat rainbowRed = 0, rainbowGreen = 0.2, rainbowBlue = 0;
 Spawner* spawner = new Spawner(X_CENTRE, Y_CENTRE, 50, 20);
-EndGate* exitgate = new EndGate(END_X, END_Y, DEFAULT_SIZE, DEFAULT_SIZE/2);
-PlayerCar* player = new PlayerCar(2, START_SCORE, START_X, START_Y, PLAYER_WIDTH, PLAYER_HEIGHT);
+EndGate* exitGate = new EndGate(END_X-4, END_Y-2, DEFAULT_SIZE*2, DEFAULT_SIZE);
+Rect* startGate = new  Rect(START_X+4, START_Y, DEFAULT_SIZE*2, DEFAULT_SIZE);
+PlayerCar* player = new PlayerCar(PLAYER_SPEED, START_SCORE, START_X+2, START_Y+2, PLAYER_WIDTH, PLAYER_HEIGHT);
 Boundary* border = new Boundary(X_CENTRE, Y_CENTRE, BOUNDARY_WIDTH, BOUNDARY_HEIGHT);
 bool rainbowMode = false, grid = false;
 bool redCountUp = false;
 bool greenCountUp = false;
+std::string s = "Respect mah authoritah!";
+void* font = GLUT_BITMAP_9_BY_15;
 
 // Callback function when the window size is changed.
 void reshape(int w, int h)
@@ -60,7 +63,20 @@ void reshape(int w, int h)
 	glLoadIdentity();
 }
 
-void RateChange(bool &isUp, GLfloat &number, GLfloat rate) //Simple function to make changing the 
+void DisplayScore()
+{
+	glPushMatrix();
+	glColor3f(0.0, 1.0, 0.0); // Green
+	glRasterPos2i(10, 10);
+	for (std::string::iterator i = s.begin(); i != s.end(); ++i)
+	{
+		char c = *i;
+		glutBitmapCharacter(font, c);
+	}
+	glPopMatrix();
+}
+
+void RateChange(bool &isUp, GLfloat &number, GLfloat rate) //Simple function to make changing the timer value smoothly go up and down
 {
 	if (number > 100) { isUp = true; }
 	if (number < 0) { isUp = false; }
@@ -77,6 +93,7 @@ void TimerFunction(int value)
 	glutPostRedisplay();
 	glutTimerFunc(5, TimerFunction, 0); //calls TimerFunction on tick - callback
 }
+
 void rightMenu(GLint id)
 {
 	switch(id)
@@ -131,6 +148,7 @@ void init(void)
 	srand(time(NULL));
     spawner->Spawn(DEFAULT_AMOUNT,DEFAULT_SIZE, DEFAULT_SIZE);
 	player->SetColor(1, 1, 1);
+	startGate->SetColor(0, 1, 0);
 	glutCreateMenu(rightMenu);
 	glutAddMenuEntry("Gamer Mode on", 1);
 	glutAddMenuEntry("Gamer Mode off", 2);
@@ -138,6 +156,7 @@ void init(void)
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	
 }
+
 
 
 // display callback function called whenever contents of window need to be re-displayed
@@ -152,8 +171,8 @@ void display()
 	glPushMatrix();
 	border->Draw(1, 1, 1, 1);
 	player->CheckBoundsCollision(border, START_X, START_Y);
-	spawner->DebugDraw(0.0,1.0,0.0,0.5);
 	glPopMatrix();
+	DisplayScore();
 	spawner->Draw();
 	if (rainbowMode)
 	{
@@ -163,12 +182,13 @@ void display()
 	{
 		player->SetColor(1, 1, 1);
 	}
+	exitGate->Draw();
+	startGate->Draw();
 	player->Draw();
 	glPushMatrix();
-	exitgate->SetColor(1.0, 0.0, 0.0);
-	exitgate->Draw();
+	exitGate->SetColor(1.0, 0.0, 0.0);
 	glPopMatrix();
-	if(exitgate->CheckCollision(player,WIN_SCORE,START_X,START_Y))
+	if(exitGate->CheckCollision(player,WIN_SCORE,START_X,START_Y))
 	{
 		spawner->obstacles.clear();
 		spawner->Spawn(DEFAULT_AMOUNT, DEFAULT_SIZE, DEFAULT_SIZE);
