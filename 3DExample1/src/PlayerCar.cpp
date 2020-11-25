@@ -2,18 +2,18 @@
 
 #include <iostream>
 
-PlayerCar::PlayerCar(GLfloat speed, GLfloat x, GLfloat y, GLfloat width, GLfloat height)
-: Rect(x, y, width, height), _speed(speed)
+PlayerCar::PlayerCar(GLfloat speed, int startScore, GLfloat x, GLfloat y, GLfloat width, GLfloat height)
+: Rect(x, y, width, height), _speed(speed), _score(startScore)
 {
-	
+	_hasWon = false;
 }
 
-PlayerCar::PlayerCar(GLfloat speed) : Rect(), _speed(speed)
+PlayerCar::PlayerCar(GLfloat speed, int startScore) : Rect(), _speed(speed), _score(startScore)
 {
-	
+	_hasWon = false;
 }
 
-void PlayerCar::CheckCollision(GameObject* obstacle)
+void PlayerCar::CheckCollision(GameObject* obstacle, int score)
 {
 	bool isColliding = false;
 	GLfloat xMinCar = _posX - (_width);
@@ -27,6 +27,9 @@ void PlayerCar::CheckCollision(GameObject* obstacle)
 		if (yMinCar + _height * 2 > yMinObs && yMinCar < yMinObs + (heightObs * 2))
 		{
 			HandleCollision(obstacle);
+			AddScore(-score);
+			LogIntValue("Player crashed and lost: ", score, " points!");
+			LogIntValue("Current score: ", GetScore(), " Points");
 		}
 	}
 }
@@ -45,7 +48,7 @@ void PlayerCar::CheckBoundsCollision(GameObject* obstacle, GLfloat startX, GLflo
 		LogIntValue("xMinCar", xMinCar);
 		LogIntValue("xMinObs", xMinObs);
 		MoveTo(startX, startY);
-		Log("Collided with Your Mom.");
+		Log("Player has been returned within bounds.");
 	}
 }
 
@@ -74,3 +77,10 @@ void PlayerCar::Rotate()
 	_width = _height;
 	_height = temp;
 }
+
+void PlayerCar::AddScore(int score)
+{
+	_score += score;
+}
+
+int PlayerCar::GetScore(){	return _score; }

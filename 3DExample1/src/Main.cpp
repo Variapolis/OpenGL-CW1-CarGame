@@ -17,21 +17,29 @@
 //Constants
 #define X_CENTRE 0.0      // Centre
 #define Y_CENTRE 0.0
-#define START_X -50.0
-#define START_Y -20.0
-#define END_X 50.0
+#define START_X -30.0	// Spawn
+#define START_Y -30.0
+#define END_X 50.0	// EndGate
 #define END_Y 38.0
-#define PLAYER_WIDTH 4.0
+
+#define PLAYER_WIDTH 4.0 // Player Size
 #define PLAYER_HEIGHT 2.0
-#define DEFAULT_SIZE 4.0
-#define BOUNDARY_WIDTH 54
+
+#define DEFAULT_SIZE 4.0 // Obstacle Size
+#define DEFAULT_AMOUNT 6
+
+#define BOUNDARY_WIDTH 54 //Bounds Size
 #define BOUNDARY_HEIGHT 40
+
+#define START_SCORE 50 // Score constants
+#define WIN_SCORE 30
+#define LOSE_SCORE 10
 
 //Globals
 GLfloat rainbowRed = 0, rainbowGreen = 0.2, rainbowBlue = 0;
 Spawner* spawner = new Spawner(X_CENTRE, Y_CENTRE, 50, 20);
 EndGate* exitgate = new EndGate(END_X, END_Y, DEFAULT_SIZE, DEFAULT_SIZE/2);
-PlayerCar* player = new PlayerCar(2, START_X, START_Y, PLAYER_WIDTH, PLAYER_HEIGHT);
+PlayerCar* player = new PlayerCar(2, START_SCORE, START_X, START_Y, PLAYER_WIDTH, PLAYER_HEIGHT);
 Boundary* border = new Boundary(X_CENTRE, Y_CENTRE, BOUNDARY_WIDTH, BOUNDARY_HEIGHT);
 bool rainbowMode = false, grid = false;
 bool redCountUp = false;
@@ -112,7 +120,7 @@ void keyboard(unsigned char key, int x, int y)
 	glutPostRedisplay();
 	for(Obstacle* i : spawner->obstacles)
 	{
-		player->CheckCollision(i);
+		player->CheckCollision(i, LOSE_SCORE);
 	}
 }
 
@@ -121,7 +129,7 @@ void init(void)
 {
     glClearColor (0.0, 0.0, 0.0, 0.0);     // window will be cleared to black
 	srand(time(NULL));
-    spawner->Spawn(6,3,3);
+    spawner->Spawn(DEFAULT_AMOUNT,DEFAULT_SIZE, DEFAULT_SIZE);
 	player->SetColor(1, 1, 1);
 	glutCreateMenu(rightMenu);
 	glutAddMenuEntry("Gamer Mode on", 1);
@@ -160,7 +168,11 @@ void display()
 	exitgate->SetColor(1.0, 0.0, 0.0);
 	exitgate->Draw();
 	glPopMatrix();
-	exitgate->CheckCollision(player,START_X,START_Y);
+	if(exitgate->CheckCollision(player,WIN_SCORE,START_X,START_Y))
+	{
+		spawner->obstacles.clear();
+		spawner->Spawn(DEFAULT_AMOUNT, DEFAULT_SIZE, DEFAULT_SIZE);
+	}
 	glutSwapBuffers();
 }
 

@@ -1,11 +1,12 @@
 #include "EndGate.h"
 
+
 EndGate::EndGate(GLfloat x, GLfloat y, GLfloat width, GLfloat height) :Rect(x, y, width, height)
 {
 }
 
 
-void EndGate::CheckCollision(GameObject* player, GLfloat startX, GLfloat startY)
+bool EndGate::CheckCollision(PlayerCar* player, int score,GLfloat startX, GLfloat startY)
 {
 	bool isColliding = false;
 	GLfloat xMinCar = _posX - (_width);
@@ -22,6 +23,11 @@ void EndGate::CheckCollision(GameObject* player, GLfloat startX, GLfloat startY)
 		{
 			player->MoveTo(startX,startY);
 			Log("Player reached End Gate.");
+			player->AddScore(score);
+			LogIntValue("Player won and gained: ", score, " points!");
+			LogIntValue("Current score: ", player->GetScore(), " Points");
+			return true;
 		}
 	}
+	return false;
 }
