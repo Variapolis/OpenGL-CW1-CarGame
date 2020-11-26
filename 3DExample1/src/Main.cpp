@@ -1,12 +1,9 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include <math.h>
-#include <stdio.h>
 #include <string>
 #include <vector>
-#include <time.h>
-#include <stdlib.h>
+#include <ctime>
 #include "freeglut.h"	// OpenGL toolkit - in the local shared folder
 #include "Spawner.h"
 #include "PlayerCar.h"
@@ -17,33 +14,39 @@
 //Constants
 #define X_CENTRE 0.0      // Centre
 #define Y_CENTRE 0.0
-#define START_X -30.0	// Spawn
-#define START_Y -30.0
+#define START_X -50.0	// Spawn
+#define START_Y -36.0
 #define END_X 50.0	// EndGate
 #define END_Y 38.0
 
-#define PLAYER_WIDTH 4.0 // Player Size
+#define PLAYER_WIDTH 4.0 // Player
 #define PLAYER_HEIGHT 2.0
+#define PLAYER_SPEED 2
 
-#define DEFAULT_SIZE 4.0 // Obstacle Size
+#define DEFAULT_SIZE 4.0 // Obstacle
 #define DEFAULT_AMOUNT 6
 
-#define BOUNDARY_WIDTH 54 //Bounds Size
+#define BOUNDARY_WIDTH 60 //Bounds
 #define BOUNDARY_HEIGHT 40
 
-#define START_SCORE 50 // Score constants
+#define START_SCORE 50 // Scores
 #define WIN_SCORE 30
 #define LOSE_SCORE 10
 
+#define GRID_SIZE 4
+
 //Globals
-GLfloat rainbowRed = 0, rainbowGreen = 0.2, rainbowBlue = 0;
-Spawner* spawner = new Spawner(X_CENTRE, Y_CENTRE, 50, 20);
-EndGate* exitgate = new EndGate(END_X, END_Y, DEFAULT_SIZE, DEFAULT_SIZE/2);
-PlayerCar* player = new PlayerCar(2, START_SCORE, START_X, START_Y, PLAYER_WIDTH, PLAYER_HEIGHT);
+GLfloat rainbowRed = 0, rainbowGreen = 0.8, rainbowBlue = 0;
+Spawner* spawner = new Spawner(X_CENTRE, Y_CENTRE, 50, 20); // Creates a spawner instance
+EndGate* exitGate = new EndGate(END_X+2, END_Y-2, DEFAULT_SIZE*2, DEFAULT_SIZE);  // Creates an End Gate instance
+Rect* startGate = new  Rect(START_X-2, START_Y, DEFAULT_SIZE*2, DEFAULT_SIZE); // Creates a start gate instance
+PlayerCar* player = new PlayerCar(PLAYER_SPEED, START_SCORE, START_X+2, START_Y+2, PLAYER_WIDTH, PLAYER_HEIGHT); // Creates a player class instance
 Boundary* border = new Boundary(X_CENTRE, Y_CENTRE, BOUNDARY_WIDTH, BOUNDARY_HEIGHT);
-bool rainbowMode = false, grid = false;
+bool rainbowMode = false, grid = false;  // Rainbow more global vars
 bool redCountUp = false;
 bool greenCountUp = false;
+std::string scoreStr = "Score: "; // score text var
+void* font = GLUT_BITMAP_9_BY_15; // font
 
 // Callback function when the window size is changed.
 void reshape(int w, int h)
@@ -60,7 +63,55 @@ void reshape(int w, int h)
 	glLoadIdentity();
 }
 
-void RateChange(bool &isUp, GLfloat &number, GLfloat rate) //Simple function to make changing the 
+void DrawGrid()
+{
+	/*LogIntValue("Width", GLUT_WINDOW_WIDTH);
+	LogIntValue("Height", GLUT_WINDOW_HEIGHT);*/
+	glPushMatrix();
+	for(GLfloat i = START_X*2; i <= END_X*2; i+= GRID_SIZE) // Vertical lines
+	{
+		
+		glBegin(GL_LINES);
+		glColor3f(0.0, 0.2, 0.2);
+		glVertex2f((i), (START_Y*2));
+		glVertex2f((i), (END_Y*2));
+		glEnd();
+	}
+	for (GLfloat i = START_Y * 2; i < END_Y * 2; i += GRID_SIZE) // Horizontal lines
+	{
+		glBegin(GL_LINES);
+		glColor3f(0.0, 0.2, 0.2);
+		glVertex2f((START_X*2), (i));
+		glVertex2f((END_X*2), (i));
+		glEnd();
+	}
+	glFlush();
+	glPopMatrix();
+	
+}
+
+void DisplayScore(GLfloat x, GLfloat y)
+{
+	std::string scr = std::to_string(player->GetScore()); // Score converted to string
+	glPushMatrix();
+	if (player->GetScore() < 0) { glColor3f(1.0, 0.0, 0.0); } // Red
+	else{ glColor3f(0.0, 1.0, 0.0); } // Green
+	glRasterPos2i(x, y); // changes the raster position for the text to a specified point.
+	for (std::string::iterator i = scoreStr.begin(); i != scoreStr.end(); ++i) // Iterates through the string and draws each character. 
+	{
+		char c = *i;
+		glutBitmapCharacter(font, c);
+	}
+	
+	for(std::string::iterator i = scr.begin(); i != scr.end(); ++i) // Iterator for score.
+	{
+		char c = *i;
+		glutBitmapCharacter(font, c);
+	}
+	glPopMatrix();
+}
+
+void RateChange(bool &isUp, GLfloat &number, GLfloat rate) //Simple function to make changing the timer value smoothly go up and down
 {
 	if (number > 100) { isUp = true; }
 	if (number < 0) { isUp = false; }
@@ -77,19 +128,23 @@ void TimerFunction(int value)
 	glutPostRedisplay();
 	glutTimerFunc(5, TimerFunction, 0); //calls TimerFunction on tick - callback
 }
-void rightMenu(GLint id)
+
+void rightMenu(GLint id) // Right click menu entries
 {
 	switch(id)
 	{
 	case 1:
 		rainbowMode = true;
+		Log("Rainbow Mode On.");
 		break;
 	case 2:
 		rainbowMode = false;
+		Log("Rainbow Mode Off.");
 		break;
 	case 3:
 		if (grid) { grid = false; }
 		else { grid = true; }
+		LogIntValue("grid toggled: ", grid);
 		break;
 	default: 
 		break;
@@ -97,7 +152,7 @@ void rightMenu(GLint id)
 	glutPostRedisplay();
 }
 
-void keyboard(unsigned char key, int x, int y)
+void keyboard(unsigned char key, int x, int y) // Keyboard actions
 {
 	switch (key)
 	{
@@ -127,10 +182,12 @@ void keyboard(unsigned char key, int x, int y)
 // Graphics initialization function
 void init(void)
 {
+	LogIntro();
     glClearColor (0.0, 0.0, 0.0, 0.0);     // window will be cleared to black
 	srand(time(NULL));
     spawner->Spawn(DEFAULT_AMOUNT,DEFAULT_SIZE, DEFAULT_SIZE);
 	player->SetColor(1, 1, 1);
+	startGate->SetColor(0, 1, 0);
 	glutCreateMenu(rightMenu);
 	glutAddMenuEntry("Gamer Mode on", 1);
 	glutAddMenuEntry("Gamer Mode off", 2);
@@ -140,21 +197,18 @@ void init(void)
 }
 
 
+
 // display callback function called whenever contents of window need to be re-displayed
    //this is the all important drawing method - all drawing code goes in here
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);     /* clear window */
-
 	glLoadIdentity();
-
-	// display code goes here (Making shapes etc)
-	glPushMatrix();
+	if (grid) { DrawGrid(); }
 	border->Draw(1, 1, 1, 1);
 	player->CheckBoundsCollision(border, START_X, START_Y);
-	spawner->DebugDraw(0.0,1.0,0.0,0.5);
-	glPopMatrix();
 	spawner->Draw();
+	//spawner->DebugDraw(1,0,0,1);
 	if (rainbowMode)
 	{
 		player->SetColor(rainbowRed/100, rainbowGreen/100, 0.5);
@@ -163,12 +217,14 @@ void display()
 	{
 		player->SetColor(1, 1, 1);
 	}
+	exitGate->Draw();
+	startGate->Draw();
 	player->Draw();
+	DisplayScore(START_X, END_Y);
 	glPushMatrix();
-	exitgate->SetColor(1.0, 0.0, 0.0);
-	exitgate->Draw();
+	exitGate->SetColor(1.0, 0.0, 0.0);
 	glPopMatrix();
-	if(exitgate->CheckCollision(player,WIN_SCORE,START_X,START_Y))
+	if(exitGate->CheckCollision(player,WIN_SCORE,START_X,START_Y))
 	{
 		spawner->obstacles.clear();
 		spawner->Spawn(DEFAULT_AMOUNT, DEFAULT_SIZE, DEFAULT_SIZE);

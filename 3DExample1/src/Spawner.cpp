@@ -85,7 +85,7 @@ void Spawner::Spawn(GLfloat width, GLfloat height) // Spawns a single obstacle a
 	}
 }
 
-bool Spawner::CheckSpawn(GameObject* obstacle, GLfloat posX, GLfloat posY, GLfloat width, GLfloat height)
+bool Spawner::CheckSpawn(GameObject* obstacle, GLfloat posX, GLfloat posY, GLfloat width, GLfloat height) //Checks collision on spawn to see if the area is occupied already.
 {
 	bool isColliding = false;
 	GLfloat xMinNew = posX - (width);
@@ -100,7 +100,7 @@ bool Spawner::CheckSpawn(GameObject* obstacle, GLfloat posX, GLfloat posY, GLflo
 	{
 		if ((yMinNew + height * 2 > yMinObs && yMinNew < yMinObs + (heightObs * 2)))
 		{
-			return true; // true means collision
+			return true; // true means area is taken
 		}
 	}
 	return false;

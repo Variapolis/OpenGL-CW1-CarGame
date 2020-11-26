@@ -1,5 +1,5 @@
 #pragma once
-#include "Rect.h"
+#include "Rect.h" //Player car used to represent the player, check collisions with the border and obstacles and contain score.
 class PlayerCar :
     public Rect
 {

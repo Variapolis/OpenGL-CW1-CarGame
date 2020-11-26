@@ -1,7 +1,7 @@
 #pragma once
 #include "freeglut.h"
 #include "ConsoleDebug.h"
-class GameObject
+class GameObject //Base class for every object, used to store position and size information.
 {
 protected:
 	GLfloat _posX, _posY, _width, _height;

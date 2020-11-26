@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 class Rect :
-    public GameObject
+    public GameObject //Rect class object used as a base and as an individual object for drawing rectangle polygons.
 {
 	GLfloat _red, _green, _blue;
 public:
