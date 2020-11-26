@@ -3,10 +3,10 @@
 #include "Obstacle.h"
 #include <vector>
 
-class Spawner : public GameObject
+class Spawner : public GameObject //Spawner class used to hold and handle a vector of obstacles.
 {
 public:
-	std::vector<Obstacle*> obstacles;
+	std::vector<Obstacle*> obstacles; // Container for all of the obstacles.
 	Spawner(GLfloat x, GLfloat y, GLfloat width, GLfloat height);
 	Spawner();
 	void DebugDraw(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
