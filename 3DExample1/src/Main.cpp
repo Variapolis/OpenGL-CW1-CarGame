@@ -209,14 +209,8 @@ void display()
 	player->CheckBoundsCollision(border, START_X, START_Y);
 	spawner->Draw();
 	//spawner->DebugDraw(1,0,0,1);
-	if (rainbowMode)
-	{
-		player->SetColor(rainbowRed/100, rainbowGreen/100, 0.5);
-	}
-	else
-	{
-		player->SetColor(1, 1, 1);
-	}
+	if (rainbowMode) {	player->SetColor(rainbowRed/100, rainbowGreen/100, 0.5); }
+	else {	player->SetColor(1, 1, 1);	}
 	exitGate->Draw();
 	startGate->Draw();
 	player->Draw();
